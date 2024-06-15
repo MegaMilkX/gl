@@ -1,0 +1,10 @@
+ScopeName|Count|MsecAverage|MsecTotal|Percentage
+glxLinkProgram|18|0.0962778|1.733|100
+createWindowOpenGl|1|113.588|113.588|100
+glxCompileShader|22|0.133|2.926|100
+GameLoop|6973|16.6606|116175|100
+GameLoop/Compose|6973|0.00590062|41.145|0.0354165
+GameLoop/PrepareStateAndClear|6973|0.0340581|237.487|0.204422
+GameLoop/DrawCommands|6973|0.00674301|47.019|0.0404727
+GameLoop/DrawCommands/PrepareState|6973|0.00292543|20.399|43.3846
+GameLoop/Present|6973|16.5846|115644|99.5436
