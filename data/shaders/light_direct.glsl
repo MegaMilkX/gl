@@ -17,15 +17,7 @@ uniform sampler2D texMetallic;
 in vec2 fragUV;
 out vec4 outLightness;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float time; 
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
+#include "uniform_blocks/common.glsl"
 
 const float PI = 3.14159265359;
 

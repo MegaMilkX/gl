@@ -13,15 +13,7 @@ uniform sampler2D texDiffuse;
 in vec2 fragUV;
 out vec4 outAlbedo;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float time; 
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
+#include "uniform_blocks/common.glsl"
 
 void main() {
 	float depth = texture(texDiffuse, fragUV).x;

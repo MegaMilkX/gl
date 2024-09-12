@@ -17,22 +17,14 @@ uniform sampler2D texNormal;
 uniform sampler2D texWorldPos;
 uniform sampler2D texRoughness;
 uniform sampler2D texMetallic;
-uniform samplerCube cubemapIrradiance;
-uniform samplerCube cubemapSpecular;
+uniform samplerCube texCubemapIrradiance;
+uniform samplerCube texCubemapSpecular;
 uniform sampler2D texBrdfLut;
 
 in vec2 fragUV;
 out vec4 outLightness;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float time; 
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
+#include "uniform_blocks/common.glsl"
 
 vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 {
@@ -60,11 +52,11 @@ void main() {
     kD *= 1.0 - metallic;
 
     const float MAX_REFLECTION_LOD = 4.0;
-    vec3 prefilteredColor = textureLod(cubemapSpecular, R * vec3(1, 1, -1), roughness * MAX_REFLECTION_LOD).xyz;
+    vec3 prefilteredColor = textureLod(texCubemapSpecular, R * vec3(1, 1, -1), roughness * MAX_REFLECTION_LOD).xyz;
     vec2 envBRDF = texture(texBrdfLut, vec2(max(dot(N, V), 0.0), roughness)).xy;
     vec3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
 
-    vec3 irradiance = texture(cubemapIrradiance, N * vec3(1, 1, -1)).xyz;
+    vec3 irradiance = texture(texCubemapIrradiance, N * vec3(1, 1, -1)).xyz;
     vec3 diffuse = irradiance * albedo;
     outLightness = vec4(kD * diffuse + specular, 1.0);
 }

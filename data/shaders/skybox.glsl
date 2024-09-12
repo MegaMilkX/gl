@@ -3,15 +3,7 @@
 in vec3 inPosition;
 out vec3 frag_cube_vec;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float time;
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
+#include "uniform_blocks/common.glsl"
 
 void main(){
 	frag_cube_vec = vec3(inPosition.x, inPosition.y, -inPosition.z);
@@ -24,23 +16,15 @@ void main(){
 #fragment
 #version 460
 in vec3 frag_cube_vec;
-uniform samplerCube cubemapEnvironment;
+uniform samplerCube texCubemapEnvironment;
 out vec4 outFinal;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float time;
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
+#include "uniform_blocks/common.glsl"
 
 void main(){
 	float gamma = 2.2;
 
-	vec3 color = textureLod(cubemapEnvironment, (frag_cube_vec), 0/*(cos(time) + 1.0) * 2.0*/).xyz;
+	vec3 color = textureLod(texCubemapEnvironment, (frag_cube_vec), 0/*(cos(time) + 1.0) * 2.0*/).xyz;
 	
 	// Gamma correction
 	color = color / (color + vec3(1.0));

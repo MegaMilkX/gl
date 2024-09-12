@@ -72,9 +72,11 @@ inline const AttribDesc* getAttribDesc(int i) {
 }
 
 inline const AttribDesc* getAttribDescByInputName(const char* inputName) {
+    int len = strlen(inputName);
     for (int i = 0; i < sizeof(attrib_desc_table) / sizeof(attrib_desc_table[0]); ++i) {
         const auto& dsc = attrib_desc_table[i];
-        if (dsc.input_name) {
+        int dsc_input_name_len = strlen(dsc.input_name);
+        if (strncmp(dsc.input_name, inputName, std::max(len, dsc_input_name_len)) == 0) {
             return &dsc;
         }
     }

@@ -1,29 +1,20 @@
 #vertex
 #version 460
+
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormal;
 layout(location = 2) in vec3 inTangent;
 layout(location = 3) in vec3 inBitangent;
 layout(location = 4) in vec2 inUV;
-layout(location = 5) in vec4 inColor;
+layout(location = 5) in vec4 inColorRGBA;
 out vec3 fragNormal;
 out vec2 fragUV;
 out vec4 fragColor;
 out vec3 fragWorldPos;
 out mat3 fragTBN;
 
-layout(std140) uniform ubCommon {
-	mat4 matProjection;
-	mat4 matView;
-	vec3 cameraPosition;
-	float reserved;
-	vec2 viewportSize;
-	float zNear;
-	float zFar;
-};
-layout(std140) uniform ubModel {
-	mat4 matModel;
-};
+#include "uniform_blocks/common.glsl"
+#include "uniform_blocks/model.glsl"
 
 void main() {
 	vec3 T = normalize(vec3(matModel * vec4(inTangent, 0.0)));
@@ -33,7 +24,7 @@ void main() {
 
 	fragNormal = (matModel * vec4(inNormal, 0.0)).xyz;
 	fragUV = inUV;
-	fragColor = inColor;
+	fragColor = inColorRGBA;
 	vec4 WP = matModel * vec4(inPosition, 1.0);
 	fragWorldPos = WP.xyz;
 	gl_Position = matProjection * matView * WP;
